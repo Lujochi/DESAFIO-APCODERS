@@ -87,7 +87,7 @@ def main():
                 main()
         
         if op == 2:
-            cursor.execute('select * from unidades order by Proprietário')
+            cursor.execute('select u.id,u.Proprietário,u.Condomínio,u.Endereço,d.valor from unidades as u left outer join despesas_unidades as d on d.id = u.despesas_das_unidades order by u.Proprietário')
             linhas = cursor.fetchall()
             print('Número total de registros:', cursor.rowcount)
             print('''\nUnidades cadastrados:
@@ -98,6 +98,7 @@ def main():
                 print('Proprietario:',linha[1])
                 print('Condominio:',linha[2])
                 print('Endereço:',linha[3])
+                print('Despesa da unidade',linha[4])
             menu_verf()
             op = input('-> Opção: ')
             if op == 1:
@@ -180,7 +181,8 @@ def main():
 
                 if op == 2:
                     quest = input('Qual 0 id da unidade que deseja procurar: ')
-                    cursor.execute('select * from despesas_unidades where id = %s order by descrição') % (quest)
+                    sql = 'select * from despesas_unidades where id = %s' % (quest)
+                    cursor.execute(sql) 
                     linhas = cursor.fetchall()
                     print('Número total de registros:', cursor.rowcount)
                     print('''\nDespesas cadastradas:
@@ -193,12 +195,66 @@ def main():
                         print('Valor:',linha[3])
                         print('Vencimento da fatura:',linha[4])
                         print('Status do pagamento',linha[5])
-                        menu_verf()
-                        op = input('-> Opção: ')
-                        if op == 1:
-                            main()
-                        else:
-                            main()
+                    menu_verf()
+                    op = input('-> Opção: ')
+                    if op == 1:
+                        main()
+                    else:
+                        main()
+
+                if op == 3:
+                    concac = ('\'' + 'vencida' + '\'')
+                    sql = 'SELECT * FROM despesas_unidades WHERE status_pagamento = %s order by descrição' % (concac)
+                    cursor.execute(sql)
+                    linhas = cursor.fetchall()
+                    print('Número total de registros:', cursor.rowcount)
+                    print('''\nDespesas cadastradas com fatura vencida:
+                    ''')
+                    for linha in linhas:
+                        print('-'*30)
+                        print('Id:',linha[0])
+                        print('Descrição:',linha[1])
+                        print('Tipo de despesa:',linha[2])
+                        print('Valor:',linha[3])
+                        print('Vencimento da fatura:',linha[4])
+                        print('Status do pagamento',linha[5])
+                    menu_verf()
+                    op = input('-> Opção: ')
+                    if op == 1:
+                        main()
+                    else:
+                        main()                                        
+
+                else:
+                    print('Erro! Opção digitada não existe!')
+                    menu_verf()
+                    op = input('-> Opção: ')
+                    if op == 1:
+                        main()
+                    else:
+                        main()
+
+            if op == 4:
+                id_d = input('Digite o id da despesa: ')
+                id_u = input('Digite o id da unidade: ')
+                sql = 'UPDATE desafio.unidades SET despesas_das_unidades = %s WHERE id = %s' %(id_d,id_u)
+                cursor.execute(sql)
+                print('Despesa cadastrada na unidade!')
+                menu_verf()
+                op = input('-> Opção: ')
+                if op == 1:
+                    main()
+                else:
+                    main()
+
+            else:
+                print('Erro! Opção digitada não existe!')
+                menu_verf()
+                op = input('-> Opção: ')
+                if op == 1:
+                    main()
+                else:
+                    main()
 
         else:
             print('Erro! Opção digitada não existe!')
