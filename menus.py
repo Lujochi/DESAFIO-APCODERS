@@ -33,6 +33,7 @@ def menu_dep():
 [1] Cadastrar nova despesa
 [2] Editar despesas
 [3] Visualizar despesas cadastradas
+[4] Cadastrar despesa na unidade
 ''')
 
 def filtro():
@@ -41,7 +42,7 @@ def filtro():
 [2] Filtrar por unidades
 [3] Filtrar por despesas com fatura vencida 
 ''')
-   
+
 def dep():
     print('''
 [1] Editar valor de uma dispesa
