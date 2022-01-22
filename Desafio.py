@@ -1,5 +1,5 @@
 import mysql.connector
-from menus import (menu_sec,menu_principal,menu_verf,menu_terc,menu_dep,filtro)
+from menus import (menu_sec,menu_principal,menu_verf,menu_terc,menu_dep,filtro,dep)
 
 mydb = mysql.connector.connect (
     host = 'localhost',
@@ -127,7 +127,32 @@ def main():
                 else:
                     main()
             if op == 2:
-                print('Falta fazer!!!!!!!!!!!') #FALTA CRIAR UMA EDIÇÂO DE DESPESAS
+                dep()
+                op = int(input('-> Opção: '))
+                if op == 1:
+                    id_desp = input('Digite o id da despesa: ')
+                    Nvalor = input('Digite o novo valor: ')
+                    sql = 'UPDATE desafio.despesas_unidades SET valor = %s WHERE id = %s' % (Nvalor,id_desp)
+                    cursor.execute(sql)
+                    print('Registro alterado com sucesso!')
+                    menu_verf()
+                    op = input('-> Opção: ')
+                    if op == 1:
+                        main()
+                    else:
+                        main()
+
+                if op == 2:
+                    Excl = input('Digite o id da dispesa que deseja excluir: ')
+                    sql = 'DELETE FROM despesas_unidades WHERE id = %s' % (Excl)
+                    cursor.execute(sql)
+                    print('Registro apagado com sucesso! ')
+                    menu_verf()
+                    op = input('-> Opção: ')
+                    if op == 1:
+                        main()
+                    else:
+                        main()
 
             if op == 3:
                 filtro()
@@ -146,12 +171,12 @@ def main():
                         print('Valor:',linha[3])
                         print('Vencimento da fatura:',linha[4])
                         print('Status do pagamento',linha[5])
-                        menu_verf()
-                        op = input('-> Opção: ')
-                        if op == 1:
-                            main()
-                        else:
-                            main()
+                    menu_verf()
+                    op = input('-> Opção: ')
+                    if op == 1:
+                        main()
+                    else:
+                        main()
 
                 if op == 2:
                     quest = input('Qual 0 id da unidade que deseja procurar: ')
