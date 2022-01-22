@@ -41,3 +41,9 @@ def filtro():
 [2] Filtrar por unidades
 [3] Filtrar por despesas com fatura vencida 
 ''')
+   
+def dep():
+    print('''
+[1] Editar valor de uma dispesa
+[2] Excluir uma dispesa
+''')
